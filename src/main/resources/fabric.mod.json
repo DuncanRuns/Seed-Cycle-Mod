@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "seedcycle",
+  "version": "${version}",
+  "name": "Seed Cycle Mod",
+  "description": "A fabric mod for the minecraft seed cycle (https://mcseedcycle.com/).",
+  "authors": [
+    "DuncanRuns"
+  ],
+  "contributors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/seedcycle/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.duncanruns.seedcycle.SeedCycle"
+    ],
+    "client": [],
+    "server": []
+  },
+  "mixins": [
+    "seedcycle.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.9"
+  }
+}

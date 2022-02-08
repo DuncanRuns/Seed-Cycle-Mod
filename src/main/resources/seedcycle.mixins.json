@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "me.duncanruns.seedcycle.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlazeEntityMixin",
+    "BlockMixin",
+    "DebugHudMixin",
+    "EnderDragonEntityMixin",
+    "EndermanEntityMixin",
+    "EyeOfEnderEntityMixin",
+    "IronGolemEntityMixin",
+    "LevelPropertiesMixin",
+    "MinecraftServerMixin",
+    "MobSpawnerLogicMixin",
+    "PiglinBrainMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
