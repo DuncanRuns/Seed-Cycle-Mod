@@ -12,7 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.WeightedPicker;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.MobSpawnerEntry;
 import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.World;
@@ -24,10 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Mixin(MobSpawnerLogic.class)
 public abstract class MobSpawnerLogicMixin {
@@ -98,6 +95,10 @@ public abstract class MobSpawnerLogicMixin {
                 return;
             }
             boolean doSpawnUpdate = false;
+            CountedRandom spawnerRandom = ((CRMOwner) world.getServer()).getCRM().spawnerRandom;
+            Random worldRandom = world.getRandom();
+            boolean isFirstSpawn = spawnerRandom.getCount() <= 0;
+            List<Vec3d> toSpawn = new ArrayList<>();
             for (int i = 0; i < this.spawnCount; ++i) {
                 CompoundTag entityTag = this.spawnEntry.getEntityTag();
                 Optional<EntityType<?>> optional = EntityType.fromTag(entityTag);
@@ -107,10 +108,8 @@ public abstract class MobSpawnerLogicMixin {
                 }
                 ListTag posList = entityTag.getList("Pos", 6);
                 int posListSize = posList.size();
-                CountedRandom spawnerRandom = ((CRMOwner) world.getServer()).getCRM().spawnerRandom;
-                Random worldRandom = world.getRandom();
                 double x, y, z;
-                if (spawnerRandom.getCount() <= 0 || !ALWAYS_RANDOM_POSITIONS) {
+                if (isFirstSpawn || !ALWAYS_RANDOM_POSITIONS) {
                     // Seed based positioning.
                     x = posListSize >= 1 ? posList.getDouble(0) : (double) blockPos.getX() + (spawnerRandom.nextDouble() - spawnerRandom.nextDouble()) * (double) this.spawnRange + 0.5;
                     y = posListSize >= 2 ? posList.getDouble(1) : (double) (blockPos.getY() + spawnerRandom.nextInt(3) - 1);
@@ -132,16 +131,19 @@ public abstract class MobSpawnerLogicMixin {
                 }
                 if (!world.doesNotCollide(optional.get().createSimpleBoundingBox(x, y, z)) || !SpawnRestriction.canSpawn(optional.get(), world.getWorld(), SpawnReason.SPAWNER, new BlockPos(x, y, z), worldRandom))
                     continue;
+                toSpawn.add(new Vec3d(x, y, z));
+            }
+            for (Vec3d vec3d : toSpawn) {
+                CompoundTag entityTag = this.spawnEntry.getEntityTag();
+                double x, y, z;
+                x = vec3d.x;
+                y = vec3d.y;
+                z = vec3d.z;
                 Entity entity2 = EntityType.loadEntityWithPassengers(entityTag, world, entity -> {
                     entity.refreshPositionAndAngles(x, y, z, entity.yaw, entity.pitch);
                     return entity;
                 });
                 if (entity2 == null) {
-                    updateSpawnsStandard();
-                    return;
-                }
-                int l = world.getNonSpectatingEntities(entity2.getClass(), new Box(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX() + 1, blockPos.getY() + 1, blockPos.getZ() + 1).expand(this.spawnRange)).size();
-                if (l >= this.maxNearbyEntities) {
                     updateSpawnsStandard();
                     return;
                 }
@@ -167,10 +169,10 @@ public abstract class MobSpawnerLogicMixin {
     }
 
     private void updateSpawnsStandard() {
-        Random random = ((CRMOwner) getWorld().getServer()).getCRM().spawnerRandom;
-        this.spawnDelay = this.maxSpawnDelay <= this.minSpawnDelay ? this.minSpawnDelay : this.minSpawnDelay + random.nextInt(this.maxSpawnDelay - this.minSpawnDelay);
+        Random spawnerRandom = ((CRMOwner) getWorld().getServer()).getCRM().spawnerRandom;
+        this.spawnDelay = this.maxSpawnDelay <= this.minSpawnDelay ? this.minSpawnDelay : this.minSpawnDelay + spawnerRandom.nextInt(this.maxSpawnDelay - this.minSpawnDelay);
         if (!this.spawnPotentials.isEmpty()) {
-            this.setSpawnEntry(WeightedPicker.getRandom(random, this.spawnPotentials));
+            this.setSpawnEntry(WeightedPicker.getRandom(spawnerRandom, this.spawnPotentials));
         }
         this.sendStatus(1);
     }
