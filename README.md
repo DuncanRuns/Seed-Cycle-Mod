@@ -11,7 +11,7 @@ Once installed, the mod will work for any worlds.
 The Seed Cycle Mod has no requirements other than the fabric loader.
 
 A tutorial for [installing the fabric loader and fabric mods can be found here](https://fabricmc.net/wiki/player:tutorials:install_mcl:windows).
-Seed Cycle's fabric mod jar can be found on the [releases page](https://github.com/duncanRuns/seedcyclemod/releases).
+Seed Cycle's fabric mod jar can be found on the [releases page](https://github.com/duncanRuns/Seed-Cycle-Mod/releases).
 Please make sure to skip the step of installing Fabric API, as it is not required for speedrun related mods and is banned for speedrunning and related competitions.
 
 # Full Feature List
