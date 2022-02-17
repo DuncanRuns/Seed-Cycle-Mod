@@ -2,7 +2,7 @@
 
 The seed cycle mod is a fabric mod made for the speedrunning challenge/competition "Seed Cycle" (https://mcseedcycle.com/).
 
-The mod is not specifically made for Seed Cycle and can be used by anyone looking to play a seed against each other or host a tournament/competition themselves.
+The mod is not made for only Seed Cycle and can be used by anyone looking to play a seed against each other or host a tournament/competition themselves.
  
 The mod includes various features with the main goal of standardizing RNG.
 
