@@ -1,5 +1,5 @@
 package me.duncanruns.seedcycle;
 
-public class RNGCounterInfo {
+public class RNGInfo {
     public int blaze, eye, barter, spawner, gravel, enderman = 0;
 }

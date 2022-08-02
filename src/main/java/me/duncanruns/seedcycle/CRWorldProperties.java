@@ -1,7 +1,7 @@
 package me.duncanruns.seedcycle;
 
 public interface CRWorldProperties {
-    RNGCounterInfo getRCI();
+    RNGInfo getRI();
 
-    void setRCI(RNGCounterInfo rngCounterInfo);
+    void setRI(RNGInfo rngInfo);
 }
