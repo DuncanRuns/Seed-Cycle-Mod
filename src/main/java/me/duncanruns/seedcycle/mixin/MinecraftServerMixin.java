@@ -48,7 +48,7 @@ public abstract class MinecraftServerMixin implements CRMOwner {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void addCRMMixin(Thread thread, RegistryTracker.Modifiable modifiable, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo info) {
-        customRandomManager = new CustomRandomManager(getSaveProperties().getGeneratorOptions().getSeed(), ((CRWorldProperties) saveProperties).getRI());
+        customRandomManager = new CustomRandomManager(((CRWorldProperties) saveProperties).getRI());
     }
 
     @Override
@@ -58,8 +58,10 @@ public abstract class MinecraftServerMixin implements CRMOwner {
 
     @Inject(method = "save", at = @At("HEAD"))
     private void saveRIMixin(boolean bl, boolean bl2, boolean bl3, CallbackInfoReturnable<Boolean> cir) {
+        long dropSeed = ((CRWorldProperties) getSaveProperties()).getRI().dropSeed;
         RNGInfo rngInfo = new RNGInfo();
         CustomRandomManager customRandomManager = ((CRMOwner) this).getCRM();
+        rngInfo.dropSeed = dropSeed;
         rngInfo.barter = customRandomManager.barterRandom.getCount();
         rngInfo.blaze = customRandomManager.blazeRandom.getCount();
         rngInfo.eye = customRandomManager.eyeRandom.getCount();
