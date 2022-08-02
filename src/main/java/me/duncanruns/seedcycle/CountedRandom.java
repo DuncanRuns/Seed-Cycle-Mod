@@ -7,6 +7,7 @@ public class CountedRandom extends Random {
     protected int nextCount;
 
     public CountedRandom() {
+        super();
         this.nextCount = 0;
     }
 

@@ -8,6 +8,7 @@ import me.duncanruns.seedcycle.CRWorldProperties;
 import me.duncanruns.seedcycle.CustomRandomManager;
 import me.duncanruns.seedcycle.RNGInfo;
 import net.minecraft.resource.ResourcePackManager;
+import net.minecraft.resource.ResourcePackProfile;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListenerFactory;
@@ -15,7 +16,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.UserCache;
 import net.minecraft.util.registry.RegistryTracker;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,19 +35,13 @@ public abstract class MinecraftServerMixin implements CRMOwner {
     public abstract SaveProperties getSaveProperties();
 
     @Shadow
-    public abstract boolean save(boolean bl, boolean bl2, boolean bl3);
-
-    @Shadow
-    public abstract GameRules getGameRules();
-
-    @Shadow
     public abstract CommandManager getCommandManager();
 
     @Shadow
     public abstract ServerCommandSource getCommandSource();
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void addCRMMixin(Thread thread, RegistryTracker.Modifiable modifiable, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo info) {
+    private void addCRMMixin(Thread thread, RegistryTracker.Modifiable modifiable, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager<ResourcePackProfile> resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo info) {
         customRandomManager = new CustomRandomManager(((CRWorldProperties) saveProperties).getRI());
     }
 

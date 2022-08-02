@@ -39,8 +39,6 @@ public abstract class MobSpawnerLogicMixin {
     @Shadow
     private int spawnRange;
     @Shadow
-    private int maxNearbyEntities;
-    @Shadow
     private int maxSpawnDelay;
     @Shadow
     private int minSpawnDelay;
@@ -59,8 +57,6 @@ public abstract class MobSpawnerLogicMixin {
     @Nullable
     protected abstract Identifier getEntityId();
 
-    @Shadow
-    protected abstract void updateSpawns();
 
     @Shadow
     protected abstract void spawnEntity(Entity entity);
