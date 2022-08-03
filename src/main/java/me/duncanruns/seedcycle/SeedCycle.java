@@ -20,7 +20,7 @@ public class SeedCycle implements ModInitializer {
     @Override
     public void onInitialize() {
         log(Level.INFO, "Initializing");
-        VERSION = FabricLoader.getInstance().getModContainer("seedcycle").get().getMetadata().getVersion().getFriendlyString();
+        VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString();
     }
 
 }
