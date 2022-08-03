@@ -5,6 +5,7 @@
   "mixins": [
     "BlazeEntityMixin",
     "BlockMixin",
+    "CommandManagerMixin",
     "DebugHudMixin",
     "EnderDragonEntityMixin",
     "EndermanEntityMixin",
