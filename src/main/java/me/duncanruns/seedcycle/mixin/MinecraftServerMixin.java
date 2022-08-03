@@ -52,10 +52,9 @@ public abstract class MinecraftServerMixin implements CRMOwner {
 
     @Inject(method = "save", at = @At("HEAD"))
     private void saveRIMixin(boolean bl, boolean bl2, boolean bl3, CallbackInfoReturnable<Boolean> cir) {
-        long dropSeed = ((CRWorldProperties) getSaveProperties()).getRI().dropSeed;
         RNGInfo rngInfo = new RNGInfo();
         CustomRandomManager customRandomManager = ((CRMOwner) this).getCRM();
-        rngInfo.dropSeed = dropSeed;
+        rngInfo.dropSeed = customRandomManager.dropSeed;
         rngInfo.barter = customRandomManager.barterRandom.getCount();
         rngInfo.blaze = customRandomManager.blazeRandom.getCount();
         rngInfo.eye = customRandomManager.eyeRandom.getCount();
