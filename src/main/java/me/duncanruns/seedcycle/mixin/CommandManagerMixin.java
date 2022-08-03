@@ -1,7 +1,7 @@
 package me.duncanruns.seedcycle.mixin;
 
 import com.mojang.brigadier.CommandDispatcher;
-import me.duncanruns.seedcycle.DropSeedCommand;
+import me.duncanruns.seedcycle.MakeDropSeedCommand;
 import me.duncanruns.seedcycle.SetDropSeedCommand;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -18,7 +18,7 @@ public abstract class CommandManagerMixin {
 
     @Inject(method = "<init>",at=@At("TAIL"))
     private void addNewCommands(CommandManager.RegistrationEnvironment environment, CallbackInfo info){
-        DropSeedCommand.register(this.dispatcher);
+        MakeDropSeedCommand.register(this.dispatcher);
         SetDropSeedCommand.register(this.dispatcher);
     }
 }

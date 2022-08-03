@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public abstract class DropSeedCommand {
+public abstract class MakeDropSeedCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("dropseed").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(3)).then(
+        dispatcher.register(CommandManager.literal("makedropseed").requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(3)).then(
                 CommandManager.argument("gold", IntegerArgumentType.integer(0, 250)).then(
                         CommandManager.literal("ingots").then(getSearchArgs(false))
                 ).then(
